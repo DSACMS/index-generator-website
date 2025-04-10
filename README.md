@@ -1,1 +1,1 @@
-# codejson-index-generator-website
+# index-generator-website
