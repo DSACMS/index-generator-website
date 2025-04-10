@@ -1,0 +1,48 @@
+{
+  "name": "index-generator-website",
+  "description": "",
+  "longDescription": "",
+  "status": "",
+  "permissions": {
+    "license": [
+      {
+        "name": "",
+        "URL": ""
+      }
+    ],
+    "usageType": "",
+    "exemptionText": ""
+  },
+  "organization": "",
+  "repositoryURL": "https://github.com/DSACMS/index-generator-website",
+  "vcs": "git",
+  "laborHours": 2994,
+  "platforms": [],
+  "categories": [],
+  "softwareType": "",
+  "languages": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "maintenance": "",
+  "date": {
+    "created": "2025-04-08T15:45:13Z",
+    "lastModified": "2025-04-10T20:56:26Z",
+    "metaDataLastUpdated": "2025-04-10T20:57:13.521Z"
+  },
+  "tags": [],
+  "contact": {
+    "email": "",
+    "name": ""
+  },
+  "localisation": false,
+  "repositoryType": "",
+  "userInput": false,
+  "fismaLevel": "",
+  "group": "",
+  "subsetInHealthcare": [],
+  "userType": [],
+  "repositoryHost": "github",
+  "maturityModelTier": 0
+}
