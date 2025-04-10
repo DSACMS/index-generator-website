@@ -1,48 +1,79 @@
 {
   "name": "index-generator-website",
-  "description": "",
-  "longDescription": "",
-  "status": "",
+  "description": "A web application that helps federal agencies compile and maintain their code.json files for SHARE IT Act compliance.",
+  "longDescription": "This tool helps federal agencies compile and maintain their code.json files for SHARE IT Act compliance. It automatically scans specified GitHub organizations, finds repositories containing code.json files, and combines them into a single index file.",
+  "status": "Development",
   "permissions": {
-    "license": [
+    "licenses": [
       {
-        "name": "",
-        "URL": ""
+        "name": "CC0-1.0",
+        "URL": "https://creativecommons.org/publicdomain/zero/1.0/"
       }
     ],
-    "usageType": "",
+    "usageType": "openSource",
     "exemptionText": ""
   },
-  "organization": "",
+  "organization": "Centers for Medicare & Medicaid Services",
   "repositoryURL": "https://github.com/DSACMS/index-generator-website",
+  "repositoryHost": "github.com/DSACMS",
+  "repositoryVisibility": "public",
   "vcs": "git",
   "laborHours": 2994,
-  "platforms": [],
-  "categories": [],
-  "softwareType": "",
+  "reuseFrequency": {
+    "forks": 0
+  },
+  "platforms": [
+    "web"
+  ],
+  "categories": [
+    "it-development",
+    "compliance",
+    "content-management"
+  ],
+  "softwareType": "standalone/web",
   "languages": [
     "HTML",
     "CSS",
     "JavaScript"
   ],
-  "maintenance": "",
+  "maintenance": "internal",
+  "contractNumber": "",
   "date": {
     "created": "2025-04-08T15:45:13Z",
     "lastModified": "2025-04-10T20:56:26Z",
     "metaDataLastUpdated": "2025-04-10T20:57:13.521Z"
   },
-  "tags": [],
+  "tags": [
+    "code.json",
+    "index-generator",
+    "SHARE-IT-Act",
+    "compliance",
+    "open-source"
+  ],
   "contact": {
-    "email": "",
-    "name": ""
+    "email": "opensource@cms.hhs.gov",
+    "name": "CMS Open Source Program Office"
   },
+  "feedbackMechanisms": [
+    "https://github.com/DSACMS/index-generator-website/issues"
+  ],
   "localisation": false,
-  "repositoryType": "",
-  "userInput": false,
-  "fismaLevel": "",
-  "group": "",
-  "subsetInHealthcare": [],
-  "userType": [],
-  "repositoryHost": "github",
+  "repositoryType": "application",
+  "userInput": true,
+  "fismaLevel": "Low",
+  "group": "CMS Open Source Program Office",
+  "projects": [
+    "https://github.com/DSACMS/codejson-index-generator"
+  ],
+  "systems": [],
+  "upstream": [
+    "USWDS"
+  ],
+  "subsetInHealthcare": [
+    "Operational"
+  ],
+  "userType": [
+    "Government"
+  ],
   "maturityModelTier": 0
 }
