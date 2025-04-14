@@ -93,6 +93,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <ul id="main-menu">
+                        <li><a href="https://github.com/DSACMS/codejson-index-generator" target="_blank" rel="noopener noreferrer">CLI Tool<span class="sr-only"> (opens in a new tab)</span></a></li>
                         <li><a href="https://github.com/DSACMS/index-generator-website" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
                         <li><a href="https://github.com/DSACMS/index-generator-website/issues" target="_blank" rel="noopener noreferrer">Contact Us<span class="sr-only"> (opens in a new tab)</span></a></li>
                     </ul>
@@ -123,17 +124,22 @@
                         <form id="index-generator-form">
                             <div class="form-group">
                                 <label for="agency-name">Agency Name <span class="tooltip" data-text="The name of the agency that you are reporting to --- e.g. HHS / FAS / DHS "><strong>?</strong></span> </label>
-                                <input type="text" id="agency-name" name="agency-name">
+                                <input type="text" id="agency-name" name="agency-name" value="CMS">
                             </div>
                             
                             <div class="form-group">
-                                <label for="github-orgs">GitHub Organizations <span class="tooltip" data-text="List of all GitHub organizations that you would like to go through --- e.g. DSACMS, CMSgov, CMS-Enterprise"><strong>?</strong></span> </label>
-                                <input type="text" id="github-orgs" name="github-orgs">
+                                <label for="github-orgs-input">GitHub Organizations <span class="tooltip" data-text="List of all GitHub organizations that you would like to go through --- e.g. DSACMS, CMSgov, CMS-Enterprise"><strong>?</strong></span></label>
+                                <div class="chips-input">
+                                    <div class="inner">
+                                        <input type="text" id="github-orgs-input" placeholder="Type and press Enter">
+                                        <input type="hidden" id="github-orgs" name="github-orgs" value="DSACMS">
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="form-group">
                                 <label for="version">Version <span class="tooltip" data-text="Version number of your index file --- e.g. 1.0.0"><strong>?</strong></span> </label>
-                                <input type="text" id="version" name="version">
+                                <input type="text" id="version" name="version" value="1.0.0">
                             </div>
                             
                             <div class="form-group">
@@ -145,20 +151,10 @@
                             </div>
                             
                             <div class="form-actions">
-                                <button type="submit" class="btn" id="generate-btn">Generate</button>
+                                <div class="btn" id="generate-btn">Generate</div>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Results Section -->
-        <section class="index-section" id="results">
-            <div class="container">
-                <div class ="section-content">
-                    <div class="content-container">
-                        <h2 class="section-heading">Results</h2>
+                        <h2 class="section-heading" id="results-section">Results</h2>
                     </div>
                 </div>
             </div>
