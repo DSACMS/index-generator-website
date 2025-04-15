@@ -139,7 +139,7 @@ function initializeChipsInput() {
         const input = document.getElementById('github-orgs-input');
         if (input) {
             input.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === 'Tab' || e.key === ',') {
+                if (e.key === 'Enter' || e.key === ',') {
                     e.preventDefault();
                     let value = this.value;
                     
@@ -181,44 +181,54 @@ async function generateIndexJSON() {
     const versionInput = document.getElementById('version')
     const tokenInput = document.getElementById('github-token')
 
-    generateButton.addEventListener('click', function () {
+    let index = {
+        "agency": "",
+        "version": "",
+        "measurementType": {
+          "method": "projects"
+        },
+        "releases": []
+    }
+
+    generateButton.addEventListener('click', async function () {
         // probably should validate these fields
         if (agencyInput.value && orgInput.value && versionInput.value !== "") {
             try {
-                let rawData = fetchCodeJSON(orgInput.value, tokenInput.value)
+                // add loading state function here that updates progress bar
+                let repos = await fetchAllRepos(orgInput.value, tokenInput.value)
+                let files = await fetchAllFiles(repos, tokenInput.value)
 
-                if (rawData) {
-                    formatIndexJSON(rawData)
-                    // if this function returns valid data, then we call a create formatIndex function that format the return data of fetchCodejson. params would be the other inputs
-                    // this function would the return a formated and proper index.json and downloads it to your machine
+                if (repos && files) {
+                    index["agency"] = agencyInput.value
+                    index["version"] = versionInput.value
+                    index['releases'] = files
+
+                    downloadIndex(index)
                 }
+
+                // add loading state function here that updates progress bar and shows results section
             } catch (error) {
-                console.log(error)
-                throw error
+                // add loading state function here that shows error, dont want to use alert tbh.
+                // maybe copy notification system from formsite?
+                console.error("Error with something?", error)
             }
         }
     })
 }
 
-async function formatIndexJSON(jsonData) {
-
-}
-
-async function fetchCodeJSON(orgs, token) {
-    // along with returning the unformatted data, this function should update the progress bar and update the results field
-    // might be worth it breaking this functionality into a seperate function rather than having a global variable that updates 
-
-    const orgsArray = orgs.split(',')
+async function fetchAllRepos(orgs, token) {
     let allRepositories = []
-
-    for (const org of orgsArray) {
+    const orgsArray = orgs.split(',')
+    
+    const orgPromises = orgsArray.map(async (org) => {
         let trimmedOrg = org.trim()
         let page = 1
         let hasMore = true
-
+        let orgRepos = []
+        
         while (hasMore) {
             const url = new URL(`https://api.github.com/orgs/${trimmedOrg}/repos`)
-            url.searchParams.append('per_page', 100)
+            url.searchParams.append('per_page', 100) // max github allows
             url.searchParams.append('page', page)
 
             const headers = {
@@ -244,20 +254,96 @@ async function fetchCodeJSON(orgs, token) {
                 }
 
                 const repos = await response.json()
-                allRepositories = [...allRepositories, ...repos]
+                orgRepos = [...orgRepos, ...repos]
 
                 const linkHeader = response.headers.get('Link')
                 hasMore = linkHeader && linkHeader.includes('rel="next"')
                 page++
             } catch (error) {
-                throw error
+                console.error(`Error fetching repositories for ${trimmedOrg}`, error)
             }
+        }
+        
+        return orgRepos
+    })
+    
+    const orgResults = await Promise.all(orgPromises)
+    orgResults.forEach(repos => {
+        allRepositories = [...allRepositories, ...repos]
+    })
+    
+    return allRepositories
+}
+
+// considering how many calls may go out using this function, we might need to include some request throttling so we can handle the rate limiting
+async function fetchAllFiles(repositories, token) {
+    let files = []
+
+    for (const repo of repositories) {
+        const url = new URL(`https://api.github.com/repos/${repo.owner.login}/${repo.name}/contents/code.json`)
+
+        const headers = {
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+        }
+
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers
+            })
+            
+            if (response.ok) {
+                const fileData = await response.json()
+
+                if (fileData.content && fileData.encoding === 'base64') {
+                    const decodedData = atob(fileData.content.replace(/\n/g, ''))
+
+                    try {
+                        const finalContent = JSON.parse(decodedData)
+                        const orderedContent = {
+                            organization: finalContent.organization,
+                            ...Object.fromEntries(
+                                Object.entries(finalContent).filter(([key]) => key !== 'organization')
+                            )
+                        };
+                        files.push(orderedContent)
+                    } catch (error) {
+                        console.error(`Error parsing JSON for ${repo.name}:`, error);
+                    }
+                }
+            } else {
+                console.log(`File not found or access denied for ${repo.name} / Status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Error fetching files', error)
         }
     }
 
-    allRepositories.forEach((repo, number) => {
-        console.log(`${number + 1}. ${repo.name}`);
-    });
+    // console.log("All collected files:")
+    // files.forEach((file, number) => {
+    //     console.log(`${number + 1}. ${file.name} / ${file}`);
+    // });
 
-    return allRepositories
+    return files
+}
+
+function downloadIndex(index) {
+    const jsonString = JSON.stringify(index, null, 2)
+    const blob = new Blob([jsonString], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+
+    const temp = document.createElement('a')
+    temp.href = url
+    temp.download = "index.json"
+    
+    document.body.appendChild(temp)
+    temp.click()
+
+    document.body.removeChild(temp)
+    URL.revokeObjectURL(url)
 }
