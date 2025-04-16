@@ -164,7 +164,12 @@
                             </div>
 
                             <div class="form-actions">
-                                <div class="btn" id="generate-btn">Generate Index</div>
+                                <div class="btn" id="generate-btn">
+                                    <div class="btn-content">
+                                        <div class="spinner"></div>
+                                        <span>Generate Index</span>
+                                    </div>
+                                </div>
                                 <div class="progress-container">
                                     <span id="progress-count">0/0</span>
                                     <div id="progress-bar">
@@ -179,12 +184,8 @@
                             <h2 class="section-heading">Results</h2>
                             <div class="results-content">
                                 <div class="success-message">
-                                    <p class="success-count"><span id="success-count">0</span> out of <span
-                                            id="total-count">0</span> repositories have been successfully added and
-                                        your index file has automatically been downloaded!</p>
-                                    <p class="failed-count"><span id="failed-count">0</span> repositories were scanned but
-                                        have issues with them and couldn't be added. You will find more information
-                                        about these repositories below.</p>
+                                    <p class="success-count"><span id="success-count">0</span> out of <span id="total-count">0</span> repositories have been successfully added and your index file has automatically been downloaded!</p>
+                                    <p class="failed-count"><span id="failed-count">0</span> repositories were scanned but have issues with them and couldn't be added. You will find more information about these repositories below.</p>
                                 </div>
                                 <div class="repos-contents">
                                     <div class="success-repos">

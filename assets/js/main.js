@@ -310,6 +310,8 @@ async function generateIndexJSON() {
     let processedRepos = 0
 
     generateButton.addEventListener('click', async function () {
+        generateButton.classList.add('loading')
+        
         failedRepos = []
         totalRepos = 0
         processedRepos = 0
@@ -330,6 +332,7 @@ async function generateIndexJSON() {
 
         if (!agencyInput.value || !orgInput.value || !versionInput.value) {
             showGeneralError("Please fill in all required fields: Agency Name, GitHub Organizations, and Version.")
+            generateButton.classList.remove('loading')
             return
         }
 
@@ -340,12 +343,14 @@ async function generateIndexJSON() {
 
                 if (totalRepos === 0) {
                     showGeneralError("No repositories found. Please check your GitHub Organizations and token.")
+                    generateButton.classList.remove('loading')
                     return
                 }
 
                 updateProgressBar(0, totalRepos)
             } catch (repoError) {
                 showGeneralError(repoError.message)
+                generateButton.classList.remove('loading')
                 return
             }
 
@@ -365,6 +370,7 @@ async function generateIndexJSON() {
                 )
             } catch (filesError) {
                 showGeneralError("Error fetching repository files: " + filesError.message)
+                generateButton.classList.remove('loading')
                 return
             }
 
@@ -377,15 +383,20 @@ async function generateIndexJSON() {
                     downloadIndex(index)
                 } catch (downloadError) {
                     showGeneralError("Error downloading index file: " + downloadError.message)
+                    generateButton.classList.remove('loading')
                     return
                 }
             }
 
             const successCount = totalRepos - failedRepos.length
             showResults(successCount, totalRepos, files, failedRepos)
+
+            generateButton.classList.remove('loading')
         } catch (error) {
             console.error("Error generating index:", error)
             showGeneralError("An unexpected error occurred: " + error.message)
+            
+            generateButton.classList.remove('loading')
         }
     })
 }
