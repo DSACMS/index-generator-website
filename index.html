@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index Generator | Centers for Medicare & Medicaid Services</title>
     <link rel="icon" type="image/x-icon" href="assets/images/dsacms.svg">
-    <meta name="description"
-        content="Generate your agency's code.json index file for SHARE IT Act compliance.">
+    <meta name="description" content="Generate your agency's code.json index file for SHARE IT Act compliance.">
     <link rel="stylesheet" href="assets/css/styles.css">
     <script src="assets/js/main.js" defer></script>
 
@@ -93,9 +92,15 @@
                         <span class="icon-bar"></span>
                     </button>
                     <ul id="main-menu">
-                        <li><a href="https://github.com/DSACMS/codejson-index-generator" target="_blank" rel="noopener noreferrer">CLI Tool<span class="sr-only"> (opens in a new tab)</span></a></li>
-                        <li><a href="https://github.com/DSACMS/index-generator-website" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
-                        <li><a href="https://github.com/DSACMS/index-generator-website/issues" target="_blank" rel="noopener noreferrer">Contact Us<span class="sr-only"> (opens in a new tab)</span></a></li>
+                        <li><a href="https://github.com/DSACMS/codejson-index-generator" target="_blank"
+                                rel="noopener noreferrer">CLI Tool<span class="sr-only"> (opens in a new tab)</span></a>
+                        </li>
+                        <li><a href="https://github.com/DSACMS/index-generator-website" target="_blank"
+                                rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
+                        </li>
+                        <li><a href="https://github.com/DSACMS/index-generator-website/issues" target="_blank"
+                                rel="noopener noreferrer">Contact Us<span class="sr-only"> (opens in a new
+                                    tab)</span></a></li>
                     </ul>
                 </nav>
             </div>
@@ -123,38 +128,76 @@
                         <h2 class="section-heading">Generate Index</h2>
                         <form id="index-generator-form">
                             <div class="form-group">
-                                <label for="agency-name">Agency Name <span class="tooltip" data-text="The name of the agency that you are reporting to --- e.g. HHS / FAS / DHS "><strong>?</strong></span> </label>
-                                <input type="text" id="agency-name" name="agency-name" value="CMS">
+                                <label for="agency-name">Agency Name <span class="tooltip"
+                                        data-text="The name of the agency that you are reporting to --- e.g. HHS / FAS / DHS "><strong>ⓘ</strong></span>
+                                </label>
+                                <input type="text" id="agency-name" name="agency-name">
                             </div>
-                            
+
                             <div class="form-group">
-                                <label for="github-orgs-input">GitHub Organizations <span class="tooltip" data-text="List of all GitHub organizations that you would like to go through --- e.g. DSACMS, CMSgov, CMS-Enterprise"><strong>?</strong></span></label>
+                                <label for="github-orgs-input">GitHub Organizations <span class="tooltip"
+                                        data-text="List of all GitHub organizations that you would like to go through --- e.g. DSACMS, CMSgov, CMS-Enterprise"><strong>ⓘ</strong></span></label>
                                 <div class="chips-input">
                                     <div class="inner">
                                         <input type="text" id="github-orgs-input" placeholder="Type and press Enter">
-                                        <input type="hidden" id="github-orgs" name="github-orgs" value="DSACMS">
+                                        <input type="hidden" id="github-orgs" name="github-orgs">
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
-                                <label for="version">Version <span class="tooltip" data-text="Version number of your index file --- e.g. 1.0.0"><strong>?</strong></span> </label>
-                                <input type="text" id="version" name="version" value="1.0.0">
+                                <label for="version">Version <span class="tooltip"
+                                        data-text="Version number of your index file --- e.g. 1.0.0"><strong>ⓘ</strong></span>
+                                </label>
+                                <input type="text" id="version" name="version">
                             </div>
-                            
+
                             <div class="form-group">
-                                <label for="github-token">GitHub Token <span class="tooltip" data-text="GitHub token that allows the application to search through many repositories and is highly recommended"><strong>?</strong></span> </label>
+                                <label for="github-token">GitHub Token <span class="tooltip"
+                                        data-text="GitHub token that allows the application to search through many repositories and is highly recommended"><strong>ⓘ</strong></span>
+                                </label>
                                 <div class="token-input-container">
-                                    <input type="password" id="github-token" name="github-token" placeholder="(Optional but recommended to avoid rate limiting)">
+                                    <input type="password" id="github-token" name="github-token"
+                                        placeholder="(Optional but recommended to avoid rate limiting)">
                                     <button type="button" id="show-token" class="token-toggle">Show</button>
                                 </div>
                             </div>
-                            
+
                             <div class="form-actions">
-                                <div class="btn" id="generate-btn">Generate</div>
+                                <div class="btn" id="generate-btn">Generate Index</div>
+                                <div class="progress-container">
+                                    <span id="progress-count">0/0</span>
+                                    <div id="progress-bar">
+                                        <div id="progress-indicator"></div>
+                                    </div>
+                                </div>
                             </div>
                         </form>
-                        <h2 class="section-heading" id="results-section">Results</h2>
+
+                        <!-- Results Section -->
+                        <div id="results-section">
+                            <h2 class="section-heading">Results</h2>
+                            <div class="results-content">
+                                <div class="success-message">
+                                    <p class="success-count"><span id="success-count">0</span> out of <span
+                                            id="total-count">0</span> repositories have been successfully added and
+                                        your index file has automatically been downloaded!</p>
+                                    <p class="failed-count"><span id="failed-count">0</span> repositories were scanned but
+                                        have issues with them and couldn't be added. You will find more information
+                                        about these repositories below.</p>
+                                </div>
+                                <div class="repos-contents">
+                                    <div class="success-repos">
+                                        <h3 class="repo-section-title">Successful Repositories</h3>
+                                        <!-- Success repositories will appear here -->
+                                    </div>
+                                    <div class="failed-repos">
+                                        <h3 class="repo-section-title">Failed Repositories</h3>
+                                        <!-- Failed repositories will appear here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,9 +228,14 @@
             <div class="grid-container">
                 <div class="grid-row">
                     <div class="footer-simple-content">
-                        <p class="footer-text">This site is maintained by <a href="https://www.cms.gov/digital-service/open-source-program-office" class="footer-link">the CMS Open Source Program Office</a>.</p>
-                        <p class="footer-text">Read our <a href="https://github.com/DSACMS/ospo-guide/blob/main/LINKING_POLICY.md" class="footer-link">linking policy</a>.</p>
-                        <p class="footer-text">Have questions or want to contact us? Email us at <a href="mailto:opensource@cms.hhs.gov" class="footer-link">opensource@cms.hhs.gov</a>.</p>
+                        <p class="footer-text">This site is maintained by <a
+                                href="https://www.cms.gov/digital-service/open-source-program-office"
+                                class="footer-link">the CMS Open Source Program Office</a>.</p>
+                        <p class="footer-text">Read our <a
+                                href="https://github.com/DSACMS/ospo-guide/blob/main/LINKING_POLICY.md"
+                                class="footer-link">linking policy</a>.</p>
+                        <p class="footer-text">Have questions or want to contact us? Email us at <a
+                                href="mailto:opensource@cms.hhs.gov" class="footer-link">opensource@cms.hhs.gov</a>.</p>
                     </div>
                 </div>
             </div>
@@ -259,4 +307,5 @@
         </section>
     </div>
 </body>
+
 </html>

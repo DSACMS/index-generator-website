@@ -72,21 +72,21 @@ function initializeTokenToggle() {
 
 function initializeChipsInput() {
     const removeButtonHTML = '<button aria-label="remove this chip">×</button>';
-    
+
     function updateHiddenInput() {
         const chipValues = [];
         document.querySelectorAll('.chip').forEach(chip => {
             const chipText = chip.textContent.replace('×', '').trim();
             chipValues.push(chipText);
         });
-        
+
         const hiddenInput = document.getElementById('github-orgs');
         hiddenInput.value = chipValues.join(',');
     }
-    
+
     function createChip(text) {
         if (!text || text.trim() === '') return;
-        
+
         let isDuplicate = false;
         document.querySelectorAll('.chip').forEach(chip => {
             const chipText = chip.textContent.replace('×', '').trim();
@@ -94,19 +94,19 @@ function initializeChipsInput() {
                 isDuplicate = true;
             }
         });
-        
+
         if (!isDuplicate) {
             const chipHTML = document.createElement('span');
             chipHTML.className = 'chip';
             chipHTML.innerHTML = escapeHTML(text) + removeButtonHTML;
-            
+
             const input = document.getElementById('github-orgs-input');
             input.parentNode.insertBefore(chipHTML, input);
-            
+
             updateHiddenInput();
         }
     }
-    
+
     function escapeHTML(unsafe) {
         return unsafe
             .replace(/&/g, "&amp;")
@@ -115,11 +115,11 @@ function initializeChipsInput() {
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
-    
+
     function initializeFromValue() {
         const hiddenInput = document.getElementById('github-orgs');
         const value = hiddenInput.value;
-        
+
         if (value) {
             const values = value.split(',');
             values.forEach(val => {
@@ -127,26 +127,26 @@ function initializeChipsInput() {
             });
         }
     }
-    
+
     const chipsContainer = document.querySelector('.chips-input > .inner');
     if (chipsContainer) {
-        chipsContainer.addEventListener('click', function(e) {
+        chipsContainer.addEventListener('click', function (e) {
             if (e.target === this) {
                 this.querySelector('input[type="text"]').focus();
             }
         });
-        
+
         const input = document.getElementById('github-orgs-input');
         if (input) {
-            input.addEventListener('keydown', function(e) {
+            input.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === ',') {
                     e.preventDefault();
                     let value = this.value;
-                    
+
                     if (e.key === ',') {
                         value = value.substring(0, value.length - 1);
                     }
-                    
+
                     createChip(value.trim());
                     this.value = '';
                 }
@@ -159,8 +159,8 @@ function initializeChipsInput() {
                 }
             });
         }
-        
-        document.addEventListener('click', function(e) {
+
+        document.addEventListener('click', function (e) {
             if (e.target.closest('.chip > button')) {
                 const chip = e.target.closest('.chip');
                 if (chip) {
@@ -169,9 +169,120 @@ function initializeChipsInput() {
                 }
             }
         });
-        
+
         initializeFromValue();
     }
+}
+
+function updateProgressBar(current, total) {
+    const progressCount = document.getElementById('progress-count')
+    const progressIndicator = document.getElementById('progress-indicator')
+
+    if (progressCount && progressIndicator) {
+        progressCount.textContent = `${current}/${total}`
+        const percentage = (current / total) * 100
+        progressIndicator.style.width = `${percentage}%`
+    }
+}
+
+function showResults(successCount, totalCount, successRepos, failedRepos) {
+    const resultsSection = document.getElementById('results-section')
+    const successCountElement = document.getElementById('success-count')
+    const totalCountElement = document.getElementById('total-count')
+    const failedCountElement = document.getElementById('failed-count')
+    const failedReposContainer = document.querySelector('.failed-repos')
+    const successReposContainer = document.querySelector('.success-repos')
+
+    let name = ""
+    let owner = ""
+
+    if (resultsSection && successCountElement && totalCountElement && failedCountElement && failedReposContainer && successReposContainer) {
+        successCountElement.textContent = successCount
+        totalCountElement.textContent = totalCount
+        failedCountElement.textContent = failedRepos.length
+
+        if (successRepos.length !== 0) {
+            successRepos.forEach(repo => {
+                const repoItem = document.createElement('div')
+                repoItem.className = 'success-repo-item'
+
+                if (repo.repositoryURL) {
+                    const urlParts = repo.repositoryURL.split('/')
+                    if (urlParts.length >= 4) {
+                        owner = urlParts[urlParts.length - 2]
+                        name = repo.name
+                    }
+                }
+
+                repoItem.innerHTML = `
+                    <span class="success-icon">✓</span>
+                    <span class="repo-name">${owner} / </span>
+                    <span class="repo-name">${name}</span>
+                    <p class="repo-status">Successfully added</p>
+                `
+                successReposContainer.appendChild(repoItem)
+            })
+        }
+
+        if (failedRepos.length !== 0) {
+            failedRepos.forEach(repo => {
+                const repoItem = document.createElement('div')
+                repoItem.className = 'failed-repo-item'
+                repoItem.innerHTML = `
+                    <span class="error-icon">✕</span>
+                    <span class="repo-name">${repo.owner} / </span>
+                    <span class="repo-name">${repo.name}</span>
+                    <p class="error-message">${repo.errorMessage}</p>
+                `
+                failedReposContainer.appendChild(repoItem)
+            })
+        }
+
+        resultsSection.style.display = 'block';
+
+        const errorContainer = document.getElementById('general-error-container')
+        if (errorContainer) {
+            errorContainer.style.display = 'none'
+        }
+
+        const resultsContent = resultsSection.querySelector('.results-content')
+        if (resultsContent) {
+            resultsContent.style.display = 'block'
+        }
+    }
+}
+
+function showGeneralError(errorMessage) {
+    const resultsSection = document.getElementById('results-section')
+    let errorContainer = document.getElementById('general-error-container')
+
+    if (!errorContainer) {
+        errorContainer = document.createElement('div')
+        errorContainer.id = 'general-error-container'
+        errorContainer.className = 'general-error'
+
+        if (resultsSection) {
+            const heading = resultsSection.querySelector('.section-heading')
+            if (heading) {
+                heading.insertAdjacentElement('afterend', errorContainer)
+            } else {
+                resultsSection.prepend(errorContainer)
+            }
+        }
+    }
+
+    errorContainer.textContent = errorMessage;
+
+    if (resultsSection) {
+        resultsSection.style.display = 'block'
+        const resultsContent = resultsSection.querySelector('.results-content')
+
+        if (resultsContent) {
+            resultsContent.style.display = 'none'
+        }
+    }
+
+    errorContainer.style.display = 'block';
 }
 
 async function generateIndexJSON() {
@@ -180,38 +291,101 @@ async function generateIndexJSON() {
     const orgInput = document.getElementById('github-orgs')
     const versionInput = document.getElementById('version')
     const tokenInput = document.getElementById('github-token')
+    const resultsSection = document.getElementById('results-section')
 
     let index = {
         "agency": "",
         "version": "",
         "measurementType": {
-          "method": "projects"
+            "method": "projects"
         },
         "releases": []
     }
 
+    let repos = []
+    let files = []
+
+    let failedRepos = []
+    let totalRepos = 0
+    let processedRepos = 0
+
     generateButton.addEventListener('click', async function () {
-        // probably should validate these fields
-        if (agencyInput.value && orgInput.value && versionInput.value !== "") {
+        failedRepos = []
+        totalRepos = 0
+        processedRepos = 0
+
+        if (resultsSection) {
+            resultsSection.style.display = 'none'
+
+            const errorContainer = document.getElementById('general-error-container')
+            if (errorContainer) {
+                errorContainer.style.display = 'none'
+            }
+
+            const resultsContent = resultsSection.querySelector('.results-content')
+            if (resultsContent) {
+                resultsContent.style.display = 'block'
+            }
+        }
+
+        if (!agencyInput.value || !orgInput.value || !versionInput.value) {
+            showGeneralError("Please fill in all required fields: Agency Name, GitHub Organizations, and Version.")
+            return
+        }
+
+        try {
             try {
-                // add loading state function here that updates progress bar
-                let repos = await fetchAllRepos(orgInput.value, tokenInput.value)
-                let files = await fetchAllFiles(repos, tokenInput.value)
+                repos = await fetchAllRepos(orgInput.value, tokenInput.value)
+                totalRepos = repos.length
 
-                if (repos && files) {
-                    index["agency"] = agencyInput.value
-                    index["version"] = versionInput.value
-                    index['releases'] = files
-
-                    downloadIndex(index)
+                if (totalRepos === 0) {
+                    showGeneralError("No repositories found. Please check your GitHub Organizations and token.")
+                    return
                 }
 
-                // add loading state function here that updates progress bar and shows results section
-            } catch (error) {
-                // add loading state function here that shows error, dont want to use alert tbh.
-                // maybe copy notification system from formsite?
-                console.error("Error with something?", error)
+                updateProgressBar(0, totalRepos)
+            } catch (repoError) {
+                showGeneralError(repoError.message)
+                return
             }
+
+            try {
+                files = await fetchAllFiles(repos, tokenInput.value,
+                    (current) => {
+                        processedRepos = current
+                        updateProgressBar(current, totalRepos)
+                    },
+                    (repo, errorMessage) => {
+                        failedRepos.push({
+                            owner: repo.owner.login,
+                            name: repo.name,
+                            errorMessage: errorMessage
+                        })
+                    }
+                )
+            } catch (filesError) {
+                showGeneralError("Error fetching repository files: " + filesError.message)
+                return
+            }
+
+            if (repos && files) {
+                index["agency"] = agencyInput.value
+                index["version"] = versionInput.value
+                index['releases'] = files
+
+                try {
+                    downloadIndex(index)
+                } catch (downloadError) {
+                    showGeneralError("Error downloading index file: " + downloadError.message)
+                    return
+                }
+            }
+
+            const successCount = totalRepos - failedRepos.length
+            showResults(successCount, totalRepos, files, failedRepos)
+        } catch (error) {
+            console.error("Error generating index:", error)
+            showGeneralError("An unexpected error occurred: " + error.message)
         }
     })
 }
@@ -219,13 +393,14 @@ async function generateIndexJSON() {
 async function fetchAllRepos(orgs, token) {
     let allRepositories = []
     const orgsArray = orgs.split(',')
-    
+    const failedOrgs = []
+
     const orgPromises = orgsArray.map(async (org) => {
         let trimmedOrg = org.trim()
         let page = 1
         let hasMore = true
         let orgRepos = []
-        
+
         while (hasMore) {
             const url = new URL(`https://api.github.com/orgs/${trimmedOrg}/repos`)
             url.searchParams.append('per_page', 100) // max github allows
@@ -247,10 +422,27 @@ async function fetchAllRepos(orgs, token) {
                 })
 
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    throw new Error(
-                        `GitHub API Error (${response.status}): ${errorData?.message}`
-                    );
+                    const errorData = await response.json().catch(() => null)
+                    let errorMessage = `GitHub API Error (${response.status})`
+
+                    if (errorData && errorData.message) {
+                        errorMessage += `: ${errorData.message}`
+                    }
+
+                    if (response.status === 404) {
+                        failedOrgs.push({
+                            name: trimmedOrg,
+                            error: "Organization not found"
+                        })
+                    } else {
+                        failedOrgs.push({
+                            name: trimmedOrg,
+                            error: errorMessage
+                        })
+                    }
+
+                    hasMore = false
+                    return []
                 }
 
                 const repos = await response.json()
@@ -260,24 +452,36 @@ async function fetchAllRepos(orgs, token) {
                 hasMore = linkHeader && linkHeader.includes('rel="next"')
                 page++
             } catch (error) {
-                console.error(`Error fetching repositories for ${trimmedOrg}`, error)
+                console.error(`Error fetching repositories for ${trimmedOrg}:`, error)
+                failedOrgs.push({
+                    name: trimmedOrg,
+                    error: error.message
+                })
+
+                hasMore = false
+                return []
             }
         }
-        
         return orgRepos
     })
-    
+
     const orgResults = await Promise.all(orgPromises)
     orgResults.forEach(repos => {
         allRepositories = [...allRepositories, ...repos]
     })
-    
+
+    if (failedOrgs.length > 0) {
+        if (failedOrgs.length === orgsArray.length) {
+            throw new Error(`Could not fetch repositories: ${failedOrgs.map(org => `${org.name} (${org.error})`).join(', ')}`)
+        }
+    }
+
     return allRepositories
 }
 
-// considering how many calls may go out using this function, we might need to include some request throttling so we can handle the rate limiting
-async function fetchAllFiles(repositories, token) {
+async function fetchAllFiles(repositories, token, progressCallback, errorCallback) {
     let files = []
+    let processedCount = 0
 
     for (const repo of repositories) {
         const url = new URL(`https://api.github.com/repos/${repo.owner.login}/${repo.name}/contents/code.json`)
@@ -296,7 +500,10 @@ async function fetchAllFiles(repositories, token) {
                 method: 'GET',
                 headers
             })
-            
+
+            processedCount++
+            if (progressCallback) progressCallback(processedCount)
+
             if (response.ok) {
                 const fileData = await response.json()
 
@@ -304,31 +511,38 @@ async function fetchAllFiles(repositories, token) {
                     const decodedData = atob(fileData.content.replace(/\n/g, ''))
 
                     try {
-                        const finalContent = JSON.parse(decodedData)
+                        const finalContent = JSON.parse(decodedData);
+                        // would be good to actually vaildate the recieved code.json schema to the actual one here
+
                         const orderedContent = {
                             organization: finalContent.organization,
                             ...Object.fromEntries(
                                 Object.entries(finalContent).filter(([key]) => key !== 'organization')
                             )
-                        };
+                        }
+
                         files.push(orderedContent)
                     } catch (error) {
-                        console.error(`Error parsing JSON for ${repo.name}:`, error);
+                        console.error(`Error parsing JSON for ${repo.name}:`, error)
+                        if (errorCallback) errorCallback(repo, "This code.json file is not formatted correctly")
                     }
                 }
             } else {
-                console.log(`File not found or access denied for ${repo.name} / Status: ${response.status}`);
+                console.log(`File not found or access denied for ${repo.name} / Status: ${response.status}`)
+
+                if (response.status === 404) {
+                    if (errorCallback) errorCallback(repo, "No code.json found")
+                } else {
+                    if (errorCallback) errorCallback(repo, `Access denied (${response.status})`)
+                }
             }
         } catch (error) {
             console.error('Error fetching files', error)
+            processedCount++
+            if (progressCallback) progressCallback(processedCount)
+            if (errorCallback) errorCallback(repo, "Error fetching code.json")
         }
     }
-
-    // console.log("All collected files:")
-    // files.forEach((file, number) => {
-    //     console.log(`${number + 1}. ${file.name} / ${file}`);
-    // });
-
     return files
 }
 
@@ -340,7 +554,7 @@ function downloadIndex(index) {
     const temp = document.createElement('a')
     temp.href = url
     temp.download = "index.json"
-    
+
     document.body.appendChild(temp)
     temp.click()
 
