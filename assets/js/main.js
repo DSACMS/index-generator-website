@@ -292,6 +292,8 @@ async function generateIndexJSON() {
     const versionInput = document.getElementById('version')
     const tokenInput = document.getElementById('github-token')
     const resultsSection = document.getElementById('results-section')
+    const errorContainer = document.getElementById('general-error-container')
+    const resultsContent = resultsSection.querySelector('.results-content')
 
     let index = {
         "agency": "",
@@ -319,12 +321,10 @@ async function generateIndexJSON() {
         if (resultsSection) {
             resultsSection.style.display = 'none'
 
-            const errorContainer = document.getElementById('general-error-container')
             if (errorContainer) {
                 errorContainer.style.display = 'none'
             }
 
-            const resultsContent = resultsSection.querySelector('.results-content')
             if (resultsContent) {
                 resultsContent.style.display = 'block'
             }
@@ -395,7 +395,7 @@ async function generateIndexJSON() {
         } catch (error) {
             console.error("Error generating index:", error)
             showGeneralError("An unexpected error occurred: " + error.message)
-            
+
             generateButton.classList.remove('loading')
         }
     })
