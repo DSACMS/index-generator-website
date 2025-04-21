@@ -160,7 +160,7 @@ body {
     width: 100%;
     z-index: 100;
     border-bottom: 1px solid var(--gray);
-    top: 24px;
+    /* top: 24px; */
     transition: top 0.3s;
 }
 
