@@ -389,6 +389,23 @@ nav ul li a:hover {
     }
 }
 
+.version-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--gray);
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    background-color: var(--white);
+    appearance: auto;
+}
+
+.version-select:focus {
+    border-color: var(--cms-bright-blue);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 154, 208, 0.2);
+}
+
 /* Progress Bar Styles */
 .form-actions {
     margin-top: 32px;
