@@ -11,7 +11,7 @@
         "URL": "https://creativecommons.org/publicdomain/zero/1.0/"
       }
     ],
-    "usageType": "openSource",
+    "usageType": ["openSource"],
     "exemptionText": ""
   },
   "organization": "Centers for Medicare & Medicaid Services",
@@ -67,17 +67,17 @@
   "localisation": false,
   "repositoryType": "application",
   "userInput": true,
-  "fismaLevel": "Low",
+  "fismaLevel": "low",
   "group": "CMS Open Source Program Office",
   "projects": [
     "https://github.com/DSACMS/codejson-index-generator"
   ],
   "systems": [],
   "subsetInHealthcare": [
-    "Operational"
+    "operational"
   ],
   "userType": [
-    "Government"
+    "government"
   ],
-  "maturityModelTier": 0
+  "maturityModelTier": 3
 }
