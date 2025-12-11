@@ -80,7 +80,7 @@
   "repositoryType": "application",
   "userInput": true,
   "fismaLevel": "low",
-  "group": "OA/DSAC/OSPO",
+  "group": "CMS/OA/DSAC",
   "projects": [
     "share-it-act"
   ],
