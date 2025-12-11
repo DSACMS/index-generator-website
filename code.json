@@ -47,7 +47,13 @@
   "maintenance": "internal",
   "contractNumber": [],
   "SBOM": "https://github.com/DSACMS/index-generator-website/network/dependencies",
-  "relatedCode": [],
+  "relatedCode": [
+    {
+      "name": "code.json Index Generator",
+      "URL": "https://github.com/DSACMS/codejson-index-generator"",
+      "isGovernmentRepo": true
+    }
+  ],
   "reusedCode": [],
   "partners": [],
   "date": {
@@ -58,7 +64,11 @@
   "tags": [
     "cms-ospo",
     "codejson",
-    "shareit"
+    "shareit",
+    "inventory",
+    "agency",
+    "website",
+    "featured"
   ],
   "contact": {
     "email": "opensource@cms.hhs.gov",
@@ -70,9 +80,9 @@
   "repositoryType": "application",
   "userInput": true,
   "fismaLevel": "low",
-  "group": "CMS Open Source Program Office",
+  "group": "OA/DSAC/OSPO",
   "projects": [
-    "https://github.com/DSACMS/codejson-index-generator"
+    "share-it-act"
   ],
   "systems": [],
   "subsetInHealthcare": [
