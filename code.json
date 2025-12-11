@@ -11,7 +11,9 @@
         "URL": "https://creativecommons.org/publicdomain/zero/1.0/"
       }
     ],
-    "usageType": ["openSource"],
+    "usageType": [
+      "openSource"
+    ],
     "exemptionText": ""
   },
   "organization": "Centers for Medicare & Medicaid Services",
@@ -23,7 +25,7 @@
   "disclaimerURL": "",
   "disclaimerText": "",
   "vcs": "git",
-  "laborHours": 3663,
+  "laborHours": 3665,
   "reuseFrequency": {
     "forks": 0,
     "clones": 0
@@ -45,18 +47,28 @@
   "maintenance": "internal",
   "contractNumber": [],
   "SBOM": "https://github.com/DSACMS/index-generator-website/network/dependencies",
-  "relatedCode": [],
+  "relatedCode": [
+    {
+      "name": "code.json Index Generator",
+      "URL": "https://github.com/DSACMS/codejson-index-generator",
+      "isGovernmentRepo": true
+    }
+  ],
   "reusedCode": [],
   "partners": [],
   "date": {
     "created": "2025-04-08T15:45:13Z",
-    "lastModified": "2025-08-25T18:31:16Z",
-    "metadataLastUpdated": "2025-11-03T21:50:06.013Z"
+    "lastModified": "2025-11-07T19:11:53Z",
+    "metadataLastUpdated": "2025-12-01T01:21:42.398Z"
   },
   "tags": [
     "cms-ospo",
     "codejson",
-    "shareit"
+    "shareit",
+    "inventory",
+    "agency",
+    "website",
+    "featured"
   ],
   "contact": {
     "email": "opensource@cms.hhs.gov",
@@ -68,9 +80,9 @@
   "repositoryType": "application",
   "userInput": true,
   "fismaLevel": "low",
-  "group": "CMS Open Source Program Office",
+  "group": "CMS/OA/DSAC",
   "projects": [
-    "https://github.com/DSACMS/codejson-index-generator"
+    "share-it-act"
   ],
   "systems": [],
   "subsetInHealthcare": [
