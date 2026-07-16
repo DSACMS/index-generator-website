@@ -296,8 +296,8 @@ async function generateIndexJSON() {
     const resultsContent = resultsSection.querySelector('.results-content')
 
     let index = {
-        "agency": "",
         "version": "",
+        "agency": "",
         "measurementType": {
             "method": "projects"
         },
