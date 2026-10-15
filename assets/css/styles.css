@@ -1,13 +1,11 @@
 /* Base Styles */
 :root {
-    --cms-blue: #015390;
-    --cms-gold: #f3ce3b;
-    --cms-bright-blue: #009ad0;
-    --cms-orange: #d76c35;
-    --cms-red-orange: #cf4f27;
-    --cms-dark-red: #941f2e;
-    --cms-dark-blue: #013b63;
-    --cms-light-blue: #e5f3fa;
+    --blue: #015390;
+    --bright-blue: #009ad0;
+    --red-orange: #cf4f27;
+    --dark-red: #941f2e;
+    --dark-blue: #013b63;
+    --light-blue: #e5f3fa;
     --white: #ffffff;
     --gray-light: #f1f1f1;
     --gray: #d6d7d9;
@@ -74,7 +72,7 @@ body {
   a:focus-visible, 
   button:focus-visible,
   [tabindex="0"]:focus-visible {
-    outline: 3px solid var(--cms-bright-blue);
+    outline: 3px solid var(--bright-blue);
     outline-offset: 3px;
   }
 
@@ -151,8 +149,8 @@ body {
     vertical-align: middle;
 }
 
-/* CMS Header */
-.cms-header {
+/* Header */
+.site-header {
     background-color: var(--white);
     padding: 15px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -171,7 +169,7 @@ body {
 }
 
 .project-logo {
-    color: var(--cms-blue);
+    color: var(--blue);
     font-size: 36px;
     font-weight: 700;
     display: flex;
@@ -196,7 +194,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color: var(--cms-bright-blue);
+    color: var(--bright-blue);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s;
@@ -204,7 +202,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: var(--cms-blue);
+    color: var(--blue);
 }
 
 /* Mobile Menu */
@@ -221,7 +219,7 @@ nav ul li a:hover {
     width: 25px;
     height: 3px;
     margin: 5px auto;
-    background-color: var(--cms-blue);
+    background-color: var(--blue);
 }
 
 /* Section Styles */
@@ -233,7 +231,7 @@ nav ul li a:hover {
 .section-title h1,
 .section-title h2 {
     font-size: 2.25rem;
-    color: var(--cms-blue);
+    color: var(--blue);
     margin-bottom: 15px;
 }
 
@@ -247,13 +245,13 @@ nav ul li a:hover {
 /* Section: Documentation */
 .documentation {
     padding: 160px 0 20px;
-    background-color: var(--cms-light-blue);
+    background-color: var(--light-blue);
 }
 
 /* Buttons */
 .btn {
     display: inline-block;
-    background-color: var(--cms-bright-blue);
+    background-color: var(--bright-blue);
     color: var(--white);
     padding: 8px 24px;
     border-radius: 4px;
@@ -265,7 +263,7 @@ nav ul li a:hover {
 }
 
 .btn:hover {
-    background-color: var(--cms-dark-blue);
+    background-color: var(--dark-blue);
 }
 
 button.btn {
@@ -278,7 +276,7 @@ button.btn {
 .btn:disabled,
 .btn.loading {
     cursor: progress;
-    background-color: var(--cms-dark-blue);
+    background-color: var(--dark-blue);
 }
 
 /* Spinner */
@@ -323,7 +321,7 @@ button.btn {
 }
 
 .section-heading {
-    color: var(--cms-blue);
+    color: var(--blue);
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 20px;
@@ -416,7 +414,7 @@ button.btn {
 }
 
 .required-marker {
-    color: var(--cms-dark-red);
+    color: var(--dark-red);
     font-weight: 600;
 }
 
@@ -457,7 +455,7 @@ button.btn {
 }
 
 .version-select:focus {
-    border-color: var(--cms-bright-blue);
+    border-color: var(--bright-blue);
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 154, 208, 0.2);
 }
@@ -492,7 +490,7 @@ button.btn {
 }
 
 #progress-indicator {
-    background-color: var(--cms-bright-blue);
+    background-color: var(--bright-blue);
     height: 100%;
     width: 0%;
     border-radius: 10px;
@@ -525,7 +523,7 @@ button.btn {
 
 .failed-orgs,
 .rate-limit-notice {
-    color: var(--cms-dark-red);
+    color: var(--dark-red);
 }
 
 .rate-limit-notice {
@@ -551,7 +549,7 @@ button.btn {
 .repo-section-title {
     margin-top: 0;
     margin-bottom: 15px;
-    color: var(--cms-blue);
+    color: var(--blue);
     font-size: 1.2rem;
     font-weight: 600;
     border-bottom: 1px solid var(--gray);
@@ -568,7 +566,7 @@ button.btn {
 }
 
 .error-icon {
-    color: var(--cms-dark-red);
+    color: var(--dark-red);
     font-size: 1.25rem;
     font-weight: bold;
     margin: 0
@@ -633,7 +631,7 @@ button.btn {
 }
 
 .chips-input > .inner:focus-within {
-    border-color: var(--cms-bright-blue);
+    border-color: var(--bright-blue);
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 154, 208, 0.2);
 }
@@ -657,7 +655,7 @@ button.btn {
 .chip {
     padding: 0.25rem 0.5rem;
     box-sizing: border-box;
-    background: var(--cms-bright-blue);
+    background: var(--bright-blue);
     border-radius: 0.5rem;
     color: var(--white);
     font-size: 0.9rem;
@@ -692,14 +690,14 @@ button.btn {
 
 /* General Error Message */
 .general-error {
-    color: var(--cms-dark-red);
+    color: var(--dark-red);
     font-size: 1.2rem;
     font-weight: 500;
     padding: 15px;
     background-color: #f9e1e0;
     border-radius: 4px;
     margin-bottom: 20px;
-    border-left: 4px solid var(--cms-red-orange);
+    border-left: 4px solid var(--red-orange);
 }
 
 /* Responsive adjustments */
@@ -738,7 +736,7 @@ button.btn {
 
 .form-group input[type="text"]:focus,
 .form-group input[type="password"]:focus {
-    border-color: var(--cms-bright-blue);
+    border-color: var(--bright-blue);
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 154, 208, 0.2);
 }
@@ -792,7 +790,7 @@ button.btn {
 
 /* Footer */
 .usa-footer {
-    background-color: var(--cms-blue);
+    background-color: var(--blue);
     margin-top: 0;
 }
 
