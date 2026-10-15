@@ -178,11 +178,6 @@ body {
     margin-right: auto;
 }
 
-.project-logo img {
-    height: 50px;
-    margin-right: 10px;
-}
-
 /* Navigation */
 nav ul {
     display: flex;
@@ -845,54 +840,29 @@ button.btn {
     background-color: var(--footer-dark);
 }
 
-.cms-identifier {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-}
-
-.cms-logos {
-    display: flex;
-    align-items: center;
-}
-
-.cms-logo-link {
-    text-decoration: none;
-    display: block;
-}
-
-.cms-logo-link:first-child {
-    margin-right: 1rem;
-}
-
-.cms-logo-img {
-    height: 3rem;
-    width: auto;
-}
-
-.cms-identity {
+.site-identity {
     line-height: 1.5;
 }
 
-.cms-domain {
+.site-domain {
     font-weight: 700;
     font-size: 1.2rem;
     margin: 0;
     color: white;
 }
 
-.cms-disclaimer {
+.site-disclaimer {
     margin: 0;
     font-size: 1rem;
     color: white;
 }
 
-.cms-disclaimer a {
+.site-disclaimer a {
     color: white;
     text-decoration: underline;
 }
 
-.cms-disclaimer a:hover {
+.site-disclaimer a:hover {
     text-decoration: none;
 }
 
@@ -1018,14 +988,6 @@ button.btn {
     .footer-links-wrapper {
         flex-direction: column;
         gap: 1.5rem;
-    }
-
-    .cms-identifier {
-        flex-direction: column;
-    }
-
-    .cms-logos {
-        margin-bottom: 1rem;
     }
 
     .usagov-container {

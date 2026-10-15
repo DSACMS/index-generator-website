@@ -46,10 +46,9 @@ A list of core team members responsible for the code and documentation in this r
 │   ├── workflows/         # GitHub Action workflows
 │   ├── CODEOWNERS.md      # Code owners
 │   └── dependabot.yml     # Dependabot configuration
-├── assets/                # Static assets like images, CSS, and JavaScript
+├── assets/                # Static assets like CSS and JavaScript
 │   ├── css/               # Stylesheet files
-│   ├── js/                # JavaScript files
-│   └── images/            # Project images and icons
+│   └── js/                # JavaScript files
 ├── code.json              # Metadata file
 └── index.html             # Main html file
 ```
