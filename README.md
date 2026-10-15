@@ -87,7 +87,6 @@ The following guide is for members of the project team who have access to the re
 ### Prerequisites
 
 - A web browser
-- Python 3 (optional, for serving the site locally)
 
 ### Setup
 
@@ -101,7 +100,7 @@ The following guide is for members of the project team who have access to the re
    cd index-generator-website
    ```
 
-3. Start up a HTTP server using python: `python3 -m http.server 8000` and open http://localhost:8000. You can also open `index.html` directly in your web browser.
+3. Open `index.html` in your web browser.
 
 ## Coding Style and Linters
 

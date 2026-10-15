@@ -17,8 +17,8 @@ Index Generator Website is a static site built with plain HTML, CSS, and JavaScr
 
 To run the project locally,
 
-1. Start up a HTTP server using python: `python3 -m http.server 8000`
-2. Open http://localhost:8000 in your browser. Right click and choose inspect to open developer tools for troubleshooting
+1. Open `index.html` in your browser
+2. Right click and choose inspect to open developer tools for troubleshooting
 3. Fill out the form and click **Generate Index**, which triggers a local download of the combined `index.json`
 
 ### Team Specific Guidelines
@@ -30,11 +30,11 @@ To run the project locally,
 
 ### Building dependencies
 
-There are no dependencies to install. Python (or any static file server) is only needed to serve the site locally.
+There are no dependencies to install.
 
 ### Building the Project
 
-1. Start up a HTTP server using python: `python3 -m http.server 8000`
+There is no build step. Open `index.html` in your browser.
 
 ### Workflow and Branching
 
