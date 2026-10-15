@@ -2,7 +2,7 @@
 
 A web application that helps federal agencies compile and maintain their code.json files for SHARE IT Act compliance.
 
-https://dsacms.github.io/index-generator-website/
+https://gsa-share-it.github.io/index-generator-website/
 
 ## About the Project
 
@@ -94,7 +94,7 @@ The following guide is for members of the project team who have access to the re
 
 1. Clone the repository:
    ```
-   git clone https://github.com/DSACMS/index-generator-website.git
+   git clone https://github.com/GSA-SHARE-IT/index-generator-website.git
    ```
 
 2. Navigate to the project directory:
@@ -115,7 +115,7 @@ This project is plain HTML, CSS, and JavaScript with no build step or package de
 - Treat each change you merge to `main` as immediately deployable to production. Do not merge changes that depend on subsequent changes you plan to make, even if you plan to make those changes shortly.
 - Ticket any unfinished or partially finished work.
 
-This project uses **continuous deployment** through [GitHub Pages](https://pages.github.com/). Pull requests are merged to `main` and the changes are immediately deployed to https://dsacms.github.io/index-generator-website/. Repository automation is configured in the [.github/workflows](.github/workflows) directory.
+This project uses **continuous deployment** through [GitHub Pages](https://pages.github.com/). Pull requests are merged to `main` and the changes are immediately deployed to https://gsa-share-it.github.io/index-generator-website/. Repository automation is configured in the [.github/workflows](.github/workflows) directory.
 
 ## Contributing
 
@@ -143,11 +143,11 @@ Information about how the Index Generator Website community is governed may be f
 
 ## Feedback
 
-If you have ideas for how we can improve or add to our capacity building efforts and methods for welcoming people into our community, please let us know at opensource@cms.hhs.gov. If you would like to comment on the tool itself, please let us know by filing an [issue on our GitHub repository](https://github.com/DSACMS/index-generator-website/issues).
+If you have ideas for how we can improve or add to our capacity building efforts and methods for welcoming people into our community, please let us know at opensource@cms.hhs.gov. If you would like to comment on the tool itself, please let us know by filing an [issue on our GitHub repository](https://github.com/GSA-SHARE-IT/index-generator-website/issues).
 
 ## Glossary
 
-- **code.json** - A metadata file placed at the root of a repository that describes a federal software project (name, description, license, contact, and more). See [gov-codejson](https://github.com/DSACMS/gov-codejson) for the schema.
+- **code.json** - A metadata file placed at the root of a repository that describes a federal software project (name, description, license, contact, and more). See [gov-codejson](https://github.com/GSA-SHARE-IT/gov-codejson) for the schema.
 - **Index file (`index.json`)** - A single file that combines the code.json files from all of an agency's repositories. This is what this tool generates.
 - **SHARE IT Act** - The Source code Harmonization And Reuse in Information Technology Act, which requires federal agencies to inventory and share their custom-developed code.
 - **GitHub token / PAT** - A personal access token used to authenticate requests to the GitHub API and raise its rate limit. See [Using a GitHub Token](#using-a-github-token).
@@ -169,7 +169,7 @@ For more information about our Security, Vulnerability, and Responsible Disclosu
 
 A Software Bill of Materials (SBOM) is a formal record containing the details and supply chain relationships of various components used in building software.
 
-In the spirit of [Executive Order 14028 - Improving the Nation's Cyber Security](https://www.gsa.gov/technology/it-contract-vehicles-and-purchasing-programs/information-technology-category/it-security/executive-order-14028), a SBOM for this repository is provided here: https://github.com/DSACMS/index-generator-website/network/dependencies.
+In the spirit of [Executive Order 14028 - Improving the Nation's Cyber Security](https://www.gsa.gov/technology/it-contract-vehicles-and-purchasing-programs/information-technology-category/it-security/executive-order-14028), a SBOM for this repository is provided here: https://github.com/GSA-SHARE-IT/index-generator-website/network/dependencies.
 
 For more information and resources about SBOMs, visit: https://www.cisa.gov/sbom.
 

@@ -55,7 +55,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md#shipping-releases) for more details on the
 
 <!-- A list of contributors is generated below using contributors.yml located in the workflows directory. -->
 
-![](<https://img.shields.io/github/contributors/DSACMS/index-generator-website?style=flat-square&label=Contributor%20Count(incl.%20bots)>)
+![](<https://img.shields.io/github/contributors/GSA-SHARE-IT/index-generator-website?style=flat-square&label=Contributor%20Count(incl.%20bots)>)
 
 <!-- readme: contributors -start -->
 <table>

@@ -17,10 +17,10 @@
     "exemptionText": ""
   },
   "organization": "Centers for Medicare & Medicaid Services",
-  "repositoryURL": "https://github.com/DSACMS/index-generator-website",
-  "repositoryHost": "github.com/DSACMS",
+  "repositoryURL": "https://github.com/GSA-SHARE-IT/index-generator-website",
+  "repositoryHost": "github.com/GSA-SHARE-IT",
   "repositoryVisibility": "public",
-  "homepageURL": "https://dsacms.github.io/index-generator-website/",
+  "homepageURL": "https://gsa-share-it.github.io/index-generator-website/",
   "downloadURL": "",
   "disclaimerURL": "",
   "disclaimerText": "",
@@ -46,7 +46,7 @@
   ],
   "maintenance": "internal",
   "contractNumber": [],
-  "SBOM": "https://github.com/DSACMS/index-generator-website/network/dependencies",
+  "SBOM": "https://github.com/GSA-SHARE-IT/index-generator-website/network/dependencies",
   "relatedCode": [
     {
       "name": "code.json Index Generator",
@@ -74,7 +74,7 @@
     "email": "opensource@cms.hhs.gov",
     "name": "CMS Open Source Program Office"
   },
-  "feedbackMechanism": "https://github.com/DSACMS/index-generator-website/issues",
+  "feedbackMechanism": "https://github.com/GSA-SHARE-IT/index-generator-website/issues",
   "AIUseCaseID": "0",
   "localisation": false,
   "repositoryType": "application",

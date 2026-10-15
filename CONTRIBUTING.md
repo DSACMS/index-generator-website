@@ -44,9 +44,9 @@ We follow the [GitHub Flow Workflow](https://guides.github.com/introduction/flow
 2.  Check out the `main` branch
 3.  Create a feature branch
 4.  Write code and tests for your change
-5.  From your branch, make a pull request against `DSACMS/index-generator-website/main`
+5.  From your branch, make a pull request against `GSA-SHARE-IT/index-generator-website/main`
 6.  Work with repo maintainers to get your change reviewed
-7.  Wait for your change to be pulled into `DSACMS/index-generator-website/main`
+7.  Wait for your change to be pulled into `GSA-SHARE-IT/index-generator-website/main`
 8.  Delete your feature branch
 
 ### Testing Conventions
@@ -55,7 +55,7 @@ We follow the [GitHub Flow Workflow](https://guides.github.com/introduction/flow
 
 There are no automated tests at the moment. Before opening a pull request, please manually verify the following in a browser:
 
-- Generating an index for a known organization (e.g. `DSACMS`) downloads an `index.json` and the success/failed counts match the repositories listed
+- Generating an index for a known organization (e.g. `GSA-SHARE-IT`) downloads an `index.json` and the success/failed counts match the repositories listed
 - Generating a second time clears the results of the previous run
 - Invalid organization names and missing required fields show a clear error message
 - The page is usable with a keyboard only and at mobile widths (~375px)
@@ -140,12 +140,12 @@ Reviewers are listed in [COMMUNITY.md](COMMUNITY.md) and code owners are listed 
 <!-- TODO: What cadence does your project ship new releases? (e.g. one-time, ad-hoc, periodically, upon merge of new patches) Who does so?
 -->
 
-Changes are released continuously: every merge to `main` is deployed to the live site at https://dsacms.github.io/index-generator-website/ by GitHub Pages.
+Changes are released continuously: every merge to `main` is deployed to the live site at https://gsa-share-it.github.io/index-generator-website/ by GitHub Pages.
 
 ## Documentation
 
 We also welcome improvements to the project documentation or to the existing
-docs. Please file an [issue](https://github.com/DSACMS/index-generator-website/issues).
+docs. Please file an [issue](https://github.com/GSA-SHARE-IT/index-generator-website/issues).
 
 ## Policies
 
