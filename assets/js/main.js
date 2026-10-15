@@ -1,43 +1,10 @@
 document.addEventListener('DOMContentLoaded', initializePage);
 
 function initializePage() {
-    initializeBanner()
     initializeMobileMenu()
     initializeTokenToggle()
     initializeChipsInput()
     generateIndexJSON()
-}
-
-function initializeBanner() {
-    const bannerButton = document.querySelector('.usa-banner__button')
-    const bannerContent = document.getElementById('gov-banner')
-    const cmsHeader = document.querySelector('.cms-header')
-    let bannerExpanded = false
-
-    if (!bannerButton || !bannerContent) return;
-
-    bannerContent.style.display = 'none'
-
-    bannerButton.addEventListener('click', function () {
-        bannerExpanded = !bannerExpanded
-        this.setAttribute('aria-expanded', bannerExpanded)
-
-        toggleBannerVisibility(bannerExpanded, bannerContent, cmsHeader)
-    });
-}
-
-function toggleBannerVisibility(isExpanded, bannerContent, cmsHeader) {
-    if (isExpanded) {
-        bannerContent.style.display = 'block'
-        if (cmsHeader) {
-            cmsHeader.style.top = bannerContent.offsetHeight + 24 + 'px'
-        }
-    } else {
-        bannerContent.style.display = 'none'
-        if (cmsHeader) {
-            cmsHeader.style.top = '24px'
-        }
-    }
 }
 
 function initializeMobileMenu() {
@@ -71,13 +38,14 @@ function initializeTokenToggle() {
 }
 
 function initializeChipsInput() {
-    const removeButtonHTML = '<button aria-label="remove this chip">×</button>';
+    function getChipText(chip) {
+        return chip.firstChild ? chip.firstChild.textContent.trim() : ''
+    }
 
     function updateHiddenInput() {
         const chipValues = [];
         document.querySelectorAll('.chip').forEach(chip => {
-            const chipText = chip.textContent.replace('×', '').trim();
-            chipValues.push(chipText);
+            chipValues.push(getChipText(chip));
         });
 
         const hiddenInput = document.getElementById('github-orgs');
@@ -89,8 +57,7 @@ function initializeChipsInput() {
 
         let isDuplicate = false;
         document.querySelectorAll('.chip').forEach(chip => {
-            const chipText = chip.textContent.replace('×', '').trim();
-            if (chipText.toLowerCase() === text.toLowerCase()) {
+            if (getChipText(chip).toLowerCase() === text.toLowerCase()) {
                 isDuplicate = true;
             }
         });
@@ -98,7 +65,13 @@ function initializeChipsInput() {
         if (!isDuplicate) {
             const chipHTML = document.createElement('span');
             chipHTML.className = 'chip';
-            chipHTML.innerHTML = escapeHTML(text) + removeButtonHTML;
+            chipHTML.appendChild(document.createTextNode(text));
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.setAttribute('aria-label', `Remove ${text}`);
+            removeButton.textContent = '×';
+            chipHTML.appendChild(removeButton);
 
             const input = document.getElementById('github-orgs-input');
             input.parentNode.insertBefore(chipHTML, input);
@@ -107,13 +80,10 @@ function initializeChipsInput() {
         }
     }
 
-    function escapeHTML(unsafe) {
-        return unsafe
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+    // Turns any text left in the input into chips, so values typed without pressing Enter are not lost
+    function commitPendingInput(input) {
+        input.value.split(',').forEach(val => createChip(val.trim()));
+        input.value = '';
     }
 
     function initializeFromValue() {
@@ -141,14 +111,7 @@ function initializeChipsInput() {
             input.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === ',') {
                     e.preventDefault();
-                    let value = this.value;
-
-                    if (e.key === ',') {
-                        value = value.substring(0, value.length - 1);
-                    }
-
-                    createChip(value.trim());
-                    this.value = '';
+                    commitPendingInput(this);
                 }
                 else if (e.key === 'Backspace' && this.value === '') {
                     const chips = document.querySelectorAll('.chip');
@@ -158,6 +121,17 @@ function initializeChipsInput() {
                     }
                 }
             });
+
+            input.addEventListener('blur', function () {
+                commitPendingInput(this);
+            });
+
+            input.addEventListener('paste', function () {
+                // let the paste land in the input first, then split it into chips
+                setTimeout(() => {
+                    if (this.value.includes(',')) commitPendingInput(this)
+                }, 0);
+            });
         }
 
         document.addEventListener('click', function (e) {
@@ -166,6 +140,7 @@ function initializeChipsInput() {
                 if (chip) {
                     chip.remove();
                     updateHiddenInput();
+                    if (input) input.focus();
                 }
             }
         });
@@ -176,66 +151,106 @@ function initializeChipsInput() {
 
 function updateProgressBar(current, total) {
     const progressCount = document.getElementById('progress-count')
+    const progressBar = document.getElementById('progress-bar')
     const progressIndicator = document.getElementById('progress-indicator')
 
     if (progressCount && progressIndicator) {
         progressCount.textContent = `${current}/${total}`
-        const percentage = (current / total) * 100
+        const percentage = total > 0 ? (current / total) * 100 : 0
         progressIndicator.style.width = `${percentage}%`
+    }
+
+    if (progressBar) {
+        progressBar.setAttribute('aria-valuemax', total)
+        progressBar.setAttribute('aria-valuenow', current)
     }
 }
 
-function showResults(successCount, totalCount, successRepos, failedRepos) {
+function createRepoItem(className, icon, iconClass, owner, name, message, messageClass) {
+    const repoItem = document.createElement('div')
+    repoItem.className = className
+
+    const iconElement = document.createElement('span')
+    iconElement.className = iconClass
+    iconElement.setAttribute('aria-hidden', 'true')
+    iconElement.textContent = icon
+
+    const ownerElement = document.createElement('span')
+    ownerElement.className = 'repo-name'
+    ownerElement.textContent = `${owner} / `
+
+    const nameElement = document.createElement('span')
+    nameElement.className = 'repo-name'
+    nameElement.textContent = name
+
+    const messageElement = document.createElement('p')
+    messageElement.className = messageClass
+    messageElement.textContent = message
+
+    repoItem.append(iconElement, ownerElement, nameElement, messageElement)
+    return repoItem
+}
+
+function clearResults() {
+    document.querySelectorAll('.success-repo-item, .failed-repo-item').forEach(item => item.remove())
+
+    document.querySelectorAll('.failed-orgs, .rate-limit-notice').forEach(element => {
+        element.textContent = ''
+        element.hidden = true
+    })
+}
+
+function revealResults(resultsSection) {
+    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+function showResults(successCount, totalCount, successRepos, failedRepos, failedOrgs = [], rateLimitNotice = '') {
     const resultsSection = document.getElementById('results-section')
     const successCountElement = document.getElementById('success-count')
     const totalCountElement = document.getElementById('total-count')
     const failedCountElement = document.getElementById('failed-count')
+    const failedOrgsElement = document.querySelector('.failed-orgs')
+    const rateLimitElement = document.querySelector('.rate-limit-notice')
     const failedReposContainer = document.querySelector('.failed-repos')
     const successReposContainer = document.querySelector('.success-repos')
 
-    let name = ""
-    let owner = ""
-
     if (resultsSection && successCountElement && totalCountElement && failedCountElement && failedReposContainer && successReposContainer) {
+        clearResults()
+
         successCountElement.textContent = successCount
         totalCountElement.textContent = totalCount
         failedCountElement.textContent = failedRepos.length
 
-        if (successRepos.length !== 0) {
-            successRepos.forEach(repo => {
-                const repoItem = document.createElement('div')
-                repoItem.className = 'success-repo-item'
+        successRepos.forEach(repo => {
+            let owner = ""
+            const name = repo.name || ""
 
-                if (repo.repositoryURL) {
-                    const urlParts = repo.repositoryURL.split('/')
-                    if (urlParts.length >= 4) {
-                        owner = urlParts[urlParts.length - 2]
-                        name = repo.name
-                    }
+            if (repo.repositoryURL) {
+                const urlParts = repo.repositoryURL.replace(/\/+$/, '').split('/')
+                if (urlParts.length >= 4) {
+                    owner = urlParts[urlParts.length - 2]
                 }
+            }
 
-                repoItem.innerHTML = `
-                    <span class="success-icon">✓</span>
-                    <span class="repo-name">${owner} / </span>
-                    <span class="repo-name">${name}</span>
-                    <p class="repo-status">Successfully added</p>
-                `
-                successReposContainer.appendChild(repoItem)
-            })
+            successReposContainer.appendChild(
+                createRepoItem('success-repo-item', '✓', 'success-icon', owner, name, 'Successfully added', 'repo-status')
+            )
+        })
+
+        failedRepos.forEach(repo => {
+            failedReposContainer.appendChild(
+                createRepoItem('failed-repo-item', '✕', 'error-icon', repo.owner, repo.name, repo.errorMessage, 'error-message')
+            )
+        })
+
+        if (failedOrgsElement && failedOrgs.length > 0) {
+            failedOrgsElement.textContent = `Some organizations couldn't be fully scanned: ${failedOrgs.map(org => `${org.name} (${org.error})`).join(', ')}`
+            failedOrgsElement.hidden = false
         }
 
-        if (failedRepos.length !== 0) {
-            failedRepos.forEach(repo => {
-                const repoItem = document.createElement('div')
-                repoItem.className = 'failed-repo-item'
-                repoItem.innerHTML = `
-                    <span class="error-icon">✕</span>
-                    <span class="repo-name">${repo.owner} / </span>
-                    <span class="repo-name">${repo.name}</span>
-                    <p class="error-message">${repo.errorMessage}</p>
-                `
-                failedReposContainer.appendChild(repoItem)
-            })
+        if (rateLimitElement && rateLimitNotice) {
+            rateLimitElement.textContent = rateLimitNotice
+            rateLimitElement.hidden = false
         }
 
         resultsSection.style.display = 'block';
@@ -249,6 +264,8 @@ function showResults(successCount, totalCount, successRepos, failedRepos) {
         if (resultsContent) {
             resultsContent.style.display = 'block'
         }
+
+        revealResults(resultsSection)
     }
 }
 
@@ -260,6 +277,7 @@ function showGeneralError(errorMessage) {
         errorContainer = document.createElement('div')
         errorContainer.id = 'general-error-container'
         errorContainer.className = 'general-error'
+        errorContainer.setAttribute('role', 'alert')
 
         if (resultsSection) {
             const heading = resultsSection.querySelector('.section-heading')
@@ -280,20 +298,45 @@ function showGeneralError(errorMessage) {
         if (resultsContent) {
             resultsContent.style.display = 'none'
         }
+
+        revealResults(resultsSection)
     }
 
     errorContainer.style.display = 'block';
 }
 
+function isRateLimited(response) {
+    return (response.status === 403 || response.status === 429) &&
+        response.headers.get('x-ratelimit-remaining') === '0'
+}
+
+// Records that the rate limit was hit and when GitHub says it resets
+function recordRateLimit(rateLimit, response) {
+    rateLimit.hit = true
+    const reset = Number(response.headers.get('x-ratelimit-reset'))
+    if (reset) rateLimit.resetAt = new Date(reset * 1000)
+}
+
+function rateLimitRetryText(rateLimit) {
+    if (!rateLimit.resetAt) return 'Add a GitHub token or try again later'
+    const time = rateLimit.resetAt.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+    return `Add a GitHub token or try again after ${time}`
+}
+
 async function generateIndexJSON() {
+    const form = document.getElementById('index-generator-form')
     const generateButton = document.getElementById('generate-btn')
     const agencyInput = document.getElementById('agency-name')
     const orgInput = document.getElementById('github-orgs')
+    const orgTextInput = document.getElementById('github-orgs-input')
     const versionInput = document.getElementById('version')
     const tokenInput = document.getElementById('github-token')
     const resultsSection = document.getElementById('results-section')
-    const errorContainer = document.getElementById('general-error-container')
     const resultsContent = resultsSection.querySelector('.results-content')
+
+    if (form) {
+        form.addEventListener('submit', (e) => e.preventDefault())
+    }
 
     let index = {
         "version": "",
@@ -308,19 +351,40 @@ async function generateIndexJSON() {
     let files = []
 
     let failedRepos = []
+    let failedOrgs = []
     let totalRepos = 0
-    let processedRepos = 0
+    let scannedRepos = 0
+    let rateLimit = { hit: false, resetAt: null }
+
+    function setLoading(isLoading) {
+        generateButton.classList.toggle('loading', isLoading)
+        generateButton.disabled = isLoading
+        generateButton.setAttribute('aria-busy', isLoading)
+    }
 
     generateButton.addEventListener('click', async function () {
-        generateButton.classList.add('loading')
-        
+        if (generateButton.classList.contains('loading')) return
+
+        // commit any organization typed without pressing Enter
+        if (orgTextInput && orgTextInput.value.trim() !== '') {
+            orgTextInput.dispatchEvent(new Event('blur'))
+        }
+
+        setLoading(true)
+
         failedRepos = []
+        failedOrgs = []
         totalRepos = 0
-        processedRepos = 0
+        scannedRepos = 0
+        rateLimit = { hit: false, resetAt: null }
+
+        clearResults()
+        updateProgressBar(0, 0)
 
         if (resultsSection) {
             resultsSection.style.display = 'none'
 
+            const errorContainer = document.getElementById('general-error-container')
             if (errorContainer) {
                 errorContainer.style.display = 'none'
             }
@@ -330,34 +394,35 @@ async function generateIndexJSON() {
             }
         }
 
-        if (!agencyInput.value || !orgInput.value || !versionInput.value) {
+        if (!agencyInput.value.trim() || !orgInput.value || !versionInput.value) {
             showGeneralError("Please fill in all required fields: Agency Name, GitHub Organizations, and Version.")
-            generateButton.classList.remove('loading')
+            setLoading(false)
             return
         }
 
         try {
             try {
-                repos = await fetchAllRepos(orgInput.value, tokenInput.value)
+                const result = await fetchAllRepos(orgInput.value, tokenInput.value.trim(), rateLimit)
+                repos = result.repos
+                failedOrgs = result.failedOrgs
                 totalRepos = repos.length
 
                 if (totalRepos === 0) {
                     showGeneralError("No repositories found. Please check your GitHub Organizations and token.")
-                    generateButton.classList.remove('loading')
+                    setLoading(false)
                     return
                 }
 
                 updateProgressBar(0, totalRepos)
             } catch (repoError) {
                 showGeneralError(repoError.message)
-                generateButton.classList.remove('loading')
+                setLoading(false)
                 return
             }
 
             try {
-                files = await fetchAllFiles(repos, tokenInput.value,
+                const result = await fetchAllFiles(repos, tokenInput.value.trim(), rateLimit,
                     (current) => {
-                        processedRepos = current
                         updateProgressBar(current, totalRepos)
                     },
                     (repo, errorMessage) => {
@@ -368,14 +433,22 @@ async function generateIndexJSON() {
                         })
                     }
                 )
+                files = result.files
+                scannedRepos = result.scannedCount
             } catch (filesError) {
                 showGeneralError("Error fetching repository files: " + filesError.message)
-                generateButton.classList.remove('loading')
+                setLoading(false)
+                return
+            }
+
+            if (rateLimit.hit && scannedRepos === 0) {
+                showGeneralError(`GitHub API rate limit reached before any repositories could be scanned. ${rateLimitRetryText(rateLimit)}.`)
+                setLoading(false)
                 return
             }
 
             if (repos && files) {
-                index["agency"] = agencyInput.value
+                index["agency"] = agencyInput.value.trim()
                 index["version"] = versionInput.value
                 index['releases'] = files
 
@@ -383,37 +456,51 @@ async function generateIndexJSON() {
                     downloadIndex(index)
                 } catch (downloadError) {
                     showGeneralError("Error downloading index file: " + downloadError.message)
-                    generateButton.classList.remove('loading')
+                    setLoading(false)
                     return
                 }
             }
 
-            const successCount = totalRepos - failedRepos.length
-            showResults(successCount, totalRepos, files, failedRepos)
+            let rateLimitNotice = ''
+            if (rateLimit.hit) {
+                rateLimitNotice = `GitHub's API rate limit was reached after scanning ${scannedRepos} of ${totalRepos} repositories, so your index only includes the repositories that were scanned. ${rateLimitRetryText(rateLimit)} to scan them all.`
+            }
 
-            generateButton.classList.remove('loading')
+            const successCount = scannedRepos - failedRepos.length
+            showResults(successCount, totalRepos, files, failedRepos, failedOrgs, rateLimitNotice)
+
+            setLoading(false)
         } catch (error) {
             console.error("Error generating index:", error)
             showGeneralError("An unexpected error occurred: " + error.message)
 
-            generateButton.classList.remove('loading')
+            setLoading(false)
         }
     })
 }
 
-async function fetchAllRepos(orgs, token) {
+async function fetchAllRepos(orgs, token, rateLimit) {
     let allRepositories = []
-    const orgsArray = orgs.split(',')
+    const orgsArray = orgs.split(',').map(org => org.trim()).filter(org => org !== '')
     const failedOrgs = []
 
-    const orgPromises = orgsArray.map(async (org) => {
-        let trimmedOrg = org.trim()
+    const orgPromises = orgsArray.map(async (trimmedOrg) => {
         let page = 1
         let hasMore = true
         let orgRepos = []
 
         while (hasMore) {
-            const url = new URL(`https://api.github.com/orgs/${trimmedOrg}/repos`)
+            if (rateLimit.hit) {
+                if (orgRepos.length > 0) {
+                    failedOrgs.push({
+                        name: trimmedOrg,
+                        error: `rate limit reached, only the first ${orgRepos.length} repositories were listed`
+                    })
+                }
+                return orgRepos
+            }
+
+            const url = new URL(`https://api.github.com/orgs/${encodeURIComponent(trimmedOrg)}/repos`)
             url.searchParams.append('per_page', 100) // max github allows
             url.searchParams.append('page', page)
 
@@ -432,6 +519,18 @@ async function fetchAllRepos(orgs, token) {
                     headers
                 })
 
+                if (isRateLimited(response)) {
+                    recordRateLimit(rateLimit, response)
+                    if (orgRepos.length === 0) {
+                        failedOrgs.push({
+                            name: trimmedOrg,
+                            error: "GitHub API rate limit reached"
+                        })
+                    }
+                    // the check at the top of the loop records partially listed orgs
+                    continue
+                }
+
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => null)
                     let errorMessage = `GitHub API Error (${response.status})`
@@ -440,17 +539,16 @@ async function fetchAllRepos(orgs, token) {
                         errorMessage += `: ${errorData.message}`
                     }
 
-                    if (response.status === 404) {
-                        failedOrgs.push({
-                            name: trimmedOrg,
-                            error: "Organization not found"
-                        })
-                    } else {
-                        failedOrgs.push({
-                            name: trimmedOrg,
-                            error: errorMessage
-                        })
+                    if (response.status === 401) {
+                        errorMessage = "GitHub token is invalid or expired"
+                    } else if (response.status === 404) {
+                        errorMessage = "Organization not found"
                     }
+
+                    failedOrgs.push({
+                        name: trimmedOrg,
+                        error: errorMessage
+                    })
 
                     hasMore = false
                     return []
@@ -481,21 +579,25 @@ async function fetchAllRepos(orgs, token) {
         allRepositories = [...allRepositories, ...repos]
     })
 
-    if (failedOrgs.length > 0) {
-        if (failedOrgs.length === orgsArray.length) {
-            throw new Error(`Could not fetch repositories: ${failedOrgs.map(org => `${org.name} (${org.error})`).join(', ')}`)
+    if (allRepositories.length === 0 && failedOrgs.length > 0) {
+        if (rateLimit.hit) {
+            throw new Error(`GitHub API rate limit reached before any repositories could be listed. ${rateLimitRetryText(rateLimit)}.`)
         }
+        throw new Error(`Could not fetch repositories: ${failedOrgs.map(org => `${org.name} (${org.error})`).join(', ')}`)
     }
 
-    return allRepositories
+    return { repos: allRepositories, failedOrgs }
 }
 
-async function fetchAllFiles(repositories, token, progressCallback, errorCallback) {
+async function fetchAllFiles(repositories, token, rateLimit, progressCallback, errorCallback) {
     let files = []
     let processedCount = 0
 
     for (const repo of repositories) {
-        const url = new URL(`https://api.github.com/repos/${repo.owner.login}/${repo.name}/contents/code.json`)
+        // once rate limited every remaining request would fail, so stop and keep what we have
+        if (rateLimit.hit) break
+
+        const url = new URL(`https://api.github.com/repos/${encodeURIComponent(repo.owner.login)}/${encodeURIComponent(repo.name)}/contents/code.json`)
 
         const headers = {
             'Accept': 'application/vnd.github+json',
@@ -512,14 +614,18 @@ async function fetchAllFiles(repositories, token, progressCallback, errorCallbac
                 headers
             })
 
-            processedCount++
-            if (progressCallback) progressCallback(processedCount)
+            if (isRateLimited(response)) {
+                recordRateLimit(rateLimit, response)
+                break
+            }
 
             if (response.ok) {
                 const fileData = await response.json()
 
                 if (fileData.content && fileData.encoding === 'base64') {
-                    const decodedData = atob(fileData.content.replace(/\n/g, ''))
+                    // decode as UTF-8 so non-ASCII characters in code.json are preserved
+                    const bytes = Uint8Array.from(atob(fileData.content.replace(/\n/g, '')), c => c.charCodeAt(0))
+                    const decodedData = new TextDecoder().decode(bytes)
 
                     try {
                         const finalContent = JSON.parse(decodedData);
@@ -537,6 +643,8 @@ async function fetchAllFiles(repositories, token, progressCallback, errorCallbac
                         console.error(`Error parsing JSON for ${repo.name}:`, error)
                         if (errorCallback) errorCallback(repo, "This code.json file is not formatted correctly")
                     }
+                } else {
+                    if (errorCallback) errorCallback(repo, "Could not read the contents of code.json")
                 }
             } else {
                 console.log(`File not found or access denied for ${repo.name} / Status: ${response.status}`)
@@ -549,12 +657,15 @@ async function fetchAllFiles(repositories, token, progressCallback, errorCallbac
             }
         } catch (error) {
             console.error('Error fetching files', error)
-            processedCount++
-            if (progressCallback) progressCallback(processedCount)
             if (errorCallback) errorCallback(repo, "Error fetching code.json")
+        } finally {
+            if (!rateLimit.hit) {
+                processedCount++
+                if (progressCallback) progressCallback(processedCount)
+            }
         }
     }
-    return files
+    return { files, scannedCount: processedCount }
 }
 
 function downloadIndex(index) {

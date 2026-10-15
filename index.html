@@ -5,76 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index Generator | Centers for Medicare & Medicaid Services</title>
-    <link rel="icon" type="image/x-icon" href="assets/images/dsacms.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/dsacms.svg">
     <meta name="description" content="Generate your agency's code.json index file for SHARE IT Act compliance.">
     <link rel="stylesheet" href="assets/css/styles.css">
     <script src="assets/js/main.js" defer></script>
 
-    <!-- Add USWDS assets for federal banner and USA identifier -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/3.6.1/css/uswds.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/3.6.1/js/uswds.min.js" defer></script>
+    <!-- USWDS styles for the footer and USA identifier -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/3.6.1/css/uswds.min.css"
+        integrity="sha384-f7X16hZxFh59nueVvfqjnXG7v+0oi9dajTIc44hZb1ebaFW022rlwwBQ8MyQZ/mL" crossorigin="anonymous"
+        referrerpolicy="no-referrer">
 </head>
 
 <body>
-    <!-- USA Banner
-    <section class="usa-banner" aria-label="Official government website">
-        <div class="usa-accordion">
-            <header class="usa-banner__header">
-                <div class="usa-banner__inner">
-                    <div class="grid-col-auto">
-                        <img class="usa-banner__header-flag"
-                            src="https://cdnjs.cloudflare.com/ajax/libs/uswds/3.6.1/img/us_flag_small.png"
-                            alt="U.S. flag">
-                    </div>
-                    <div class="grid-col-fill tablet:grid-col-auto">
-                        <p class="usa-banner__header-text">An official website of the United States government</p>
-                        <p class="usa-banner__header-action" aria-hidden="true">Here's how you know</p>
-                    </div>
-                    <button class="usa-accordion__button usa-banner__button" aria-expanded="false"
-                        aria-controls="gov-banner">
-                        <span class="usa-banner__button-text">Here's how you know</span>
-                    </button>
-                </div>
-            </header>
-            <div class="usa-banner__content usa-accordion__content" id="gov-banner">
-                <div class="grid-row grid-gap-lg">
-                    <div class="usa-banner__guidance tablet:grid-col-6">
-                        <img class="usa-banner__icon usa-media-block__img"
-                            src="https://cdnjs.cloudflare.com/ajax/libs/uswds/3.6.1/img/icon-dot-gov.svg" alt="Dot gov">
-                        <div class="usa-media-block__body">
-                            <p>
-                                <strong>Official websites use .gov</strong>
-                                <br>
-                                A <strong>.gov</strong> website belongs to an official government organization in the
-                                United States.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="usa-banner__guidance tablet:grid-col-6">
-                        <img class="usa-banner__icon usa-media-block__img"
-                            src="https://cdnjs.cloudflare.com/ajax/libs/uswds/3.6.1/img/icon-https.svg" alt="Https">
-                        <div class="usa-media-block__body">
-                            <p>
-                                <strong>Secure .gov websites use HTTPS</strong>
-                                <br>
-                                A <strong>lock</strong> ( <span class="icon-lock"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="52" height="64" viewBox="0 0 52 64"
-                                        class="usa-banner__lock-image" role="img"
-                                        aria-labelledby="banner-lock-title banner-lock-description">
-                                        <title id="banner-lock-title">Lock</title>
-                                        <desc id="banner-lock-description">A locked padlock</desc>
-                                        <path fill="#000000" fill-rule="evenodd"
-                                            d="M26 0c10.493 0 19 8.507 19 19v9h3a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V32a4 4 0 0 1 4-4h3v-9C7 8.507 15.507 0 26 0zm0 8c-5.979 0-10.843 4.77-10.996 10.712L15 19v9h22v-9c0-6.075-4.925-11-11-11z" />
-                                    </svg></span> ) or <strong>https://</strong> means you've safely connected to the
-                                .gov website. Share sensitive information only on official, secure websites.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
     <!-- CMS Header -->
     <header role="banner" class="cms-header">
         <div class="container">
@@ -112,7 +54,7 @@
         <section class="documentation" id="documentation" aria-labelledby="documentation-heading">
             <div class="container">
                 <div class="section-title">
-                    <h2 id="documentation-heading">Generate your agency's code.json index</h2>
+                    <h1 id="documentation-heading">Generate your agency's code.json index</h1>
                     <p>This tool helps federal agencies compile and maintain their code.json files for SHARE IT Act
                         compliance. It automatically scans specified GitHub organizations, finds repositories
                         containing code.json files, and combines them into a single index file.</p>
@@ -126,29 +68,32 @@
                 <div class="section-content">
                     <div class="content-container">
                         <h2 class="section-heading">Generate Index</h2>
-                        <form id="index-generator-form">
+                        <form id="index-generator-form" novalidate>
+                            <p class="form-hint">Fields marked with <span class="required-marker" aria-hidden="true">*</span><span class="sr-only">an asterisk</span> are required.</p>
                             <div class="form-group">
-                                <label for="agency-name">Agency Name <span class="tooltip"
-                                        data-text="The name of the agency that you are reporting to --- e.g. HHS / FAS / DHS "><strong>ⓘ</strong></span>
+                                <label for="agency-name">Agency Name <span class="required-marker" aria-hidden="true">*</span> <span class="tooltip" tabindex="0" role="img" aria-label="The name of the agency that you are reporting to --- e.g. HHS / FAS / DHS"
+                                        data-text="The name of the agency that you are reporting to --- e.g. HHS / FAS / DHS"><strong aria-hidden="true">ⓘ</strong></span>
                                 </label>
-                                <input type="text" id="agency-name" name="agency-name">
+                                <input type="text" id="agency-name" name="agency-name" aria-required="true">
                             </div>
 
                             <div class="form-group">
-                                <label for="github-orgs-input">GitHub Organizations <span class="tooltip"
-                                        data-text="List of all GitHub organizations that you would like to go through --- e.g. DSACMS, CMSgov, CMS-Enterprise"><strong>ⓘ</strong></span></label>
+                                <label for="github-orgs-input">GitHub Organizations <span class="required-marker" aria-hidden="true">*</span> <span class="tooltip" tabindex="0" role="img" aria-label="List of all GitHub organizations that you would like to go through --- e.g. DSACMS, CMSgov, CMS-Enterprise"
+                                        data-text="List of all GitHub organizations that you would like to go through --- e.g. DSACMS, CMSgov, CMS-Enterprise"><strong aria-hidden="true">ⓘ</strong></span></label>
                                 <div class="chips-input">
                                     <div class="inner">
-                                        <input type="text" id="github-orgs-input" placeholder="Type and press Enter">
+                                        <input type="text" id="github-orgs-input" placeholder="Type and press Enter" aria-required="true"
+                                            autocomplete="off" spellcheck="false">
                                         <input type="hidden" id="github-orgs" name="github-orgs">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="version">Version <span class="tooltip" data-text="Version number of your index file"><strong>ⓘ</strong></span></label>
-                                <select id="version" name="version" class="version-select">
-                                    <option value=""></option>
+                                <label for="version">Version <span class="required-marker" aria-hidden="true">*</span> <span class="tooltip" tabindex="0" role="img" aria-label="Version number of your index file"
+                                        data-text="Version number of your index file"><strong aria-hidden="true">ⓘ</strong></span></label>
+                                <select id="version" name="version" class="version-select" aria-required="true">
+                                    <option value="">Select a version</option>
                                     <option value="1.0.0">1.0.0</option>
                                     <option value="1.0.1">1.0.1</option>
                                     <option value="2.0.0">2.0.0</option>
@@ -157,26 +102,28 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="github-token">GitHub Token <span class="tooltip"
-                                        data-text="GitHub token that allows the application to search through many repositories and is highly recommended"><strong>ⓘ</strong></span>
+                                <label for="github-token">GitHub Token <span class="tooltip" tabindex="0" role="img" aria-label="GitHub token that allows the application to search through many repositories and is highly recommended"
+                                        data-text="GitHub token that allows the application to search through many repositories and is highly recommended"><strong aria-hidden="true">ⓘ</strong></span>
                                 </label>
                                 <div class="token-input-container">
                                     <input type="password" id="github-token" name="github-token"
-                                        placeholder="(Optional but recommended to avoid rate limiting)">
-                                    <button type="button" id="show-token" class="token-toggle">Show</button>
+                                        placeholder="(Optional but recommended to avoid rate limiting)"
+                                        autocomplete="off" spellcheck="false">
+                                    <button type="button" id="show-token" class="token-toggle" aria-controls="github-token">Show</button>
                                 </div>
                             </div>
 
                             <div class="form-actions">
-                                <div class="btn" id="generate-btn">
-                                    <div class="btn-content">
-                                        <div class="spinner"></div>
+                                <button type="button" class="btn" id="generate-btn">
+                                    <span class="btn-content">
+                                        <span class="spinner" aria-hidden="true"></span>
                                         <span>Generate Index</span>
-                                    </div>
-                                </div>
+                                    </span>
+                                </button>
                                 <div class="progress-container">
                                     <span id="progress-count">0/0</span>
-                                    <div id="progress-bar">
+                                    <div id="progress-bar" role="progressbar" aria-label="Repositories scanned"
+                                        aria-valuemin="0" aria-valuemax="0" aria-valuenow="0">
                                         <div id="progress-indicator"></div>
                                     </div>
                                 </div>
@@ -184,12 +131,14 @@
                         </form>
 
                         <!-- Results Section -->
-                        <div id="results-section">
+                        <div id="results-section" aria-live="polite">
                             <h2 class="section-heading">Results</h2>
                             <div class="results-content">
                                 <div class="success-message">
                                     <p class="success-count"><span id="success-count">0</span> out of <span id="total-count">0</span> repositories have been successfully added and your index file has automatically been downloaded!</p>
                                     <p class="failed-count"><span id="failed-count">0</span> repositories were scanned but have issues with them and couldn't be added. You will find more information about these repositories below.</p>
+                                    <p class="failed-orgs" hidden></p>
+                                    <p class="rate-limit-notice" hidden></p>
                                 </div>
                                 <div class="repos-contents">
                                     <div class="success-repos">
@@ -270,7 +219,7 @@
                 </div>
             </div>
         </section>
-        <nav class="usa-identifier__section usa-identifier__section--required-links" aria-label="Important links,,,">
+        <nav class="usa-identifier__section usa-identifier__section--required-links" aria-label="Important links">
             <div class="usa-identifier__container">
                 <div class="footer-links-wrapper">
                     <div class="footer-links-group">
