@@ -18,11 +18,11 @@ To provide accessible, user-friendly tools and clear documentation that simplifi
 
 ### Agency Mission
 
-The Centers for Medicare & Medicaid Services (CMS) is committed to strengthening and modernizing the nation's health care system to provide access to high-quality care and improved health at lower costs.
+The General Services Administration (GSA) is accelerating federal mission delivery for the American people.
 
 ### Team Mission
 
-The CMS Open Source Program Office aims to facilitate the development, use, and sharing of open source software across government.
+The GSA SHARE IT team aims to facilitate the development, use, and sharing of open source software across government.
 
 ## Core Team
 
@@ -123,7 +123,7 @@ Thank you for considering contributing to an Open Source project of the US Gover
 
 ## Codeowners
 
-The contents of this repository are managed by the CMS Open Source Program Office. Those responsible for the code and documentation in this repository can be found in [CODEOWNERS.md](.github/CODEOWNERS.md).
+The contents of this repository are managed by the GSA SHARE IT team. Those responsible for the code and documentation in this repository can be found in [CODEOWNERS.md](.github/CODEOWNERS.md).
 
 ## Community
 

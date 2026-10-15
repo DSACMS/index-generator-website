@@ -16,7 +16,7 @@
     ],
     "exemptionText": ""
   },
-  "organization": "Centers for Medicare & Medicaid Services",
+  "organization": "General Services Administration",
   "repositoryURL": "https://github.com/GSA-SHARE-IT/index-generator-website",
   "repositoryHost": "github.com/GSA-SHARE-IT",
   "repositoryVisibility": "public",
@@ -62,7 +62,7 @@
     "metadataLastUpdated": "2025-12-01T01:21:42.398Z"
   },
   "tags": [
-    "cms-ospo",
+    "gsa-share-it",
     "codejson",
     "shareit",
     "inventory",
@@ -72,7 +72,7 @@
   ],
   "contact": {
     "email": "opensource@cms.hhs.gov",
-    "name": "CMS Open Source Program Office"
+    "name": "GSA SHARE IT Team"
   },
   "feedbackMechanism": "https://github.com/GSA-SHARE-IT/index-generator-website/issues",
   "AIUseCaseID": "0",
@@ -80,7 +80,7 @@
   "repositoryType": "application",
   "userInput": true,
   "fismaLevel": "low",
-  "group": "CMS/OA/DSAC",
+  "group": "GSA/SHARE-IT",
   "projects": [
     "share-it-act"
   ],
